@@ -117,9 +117,7 @@ class Client:
 
         print("All transfers complete, listening to offer requests\n\n")
 
-
-
-    def _handle_udp_connection(self, server_ip, udp_port,id):
+    def _handle_udp_connection(self, server_ip, udp_port, id):
         """Handle UDP connection to the server."""
         try:
             udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -175,10 +173,10 @@ class Client:
         finally:
             udp_socket.close()
 
-    def _handle_server(self, server_ip, tcp_port,id):
+    def _handle_server(self, server_ip, tcp_port, id):
         """Handle connection to the server."""
         print(f"TCP thread #{id} is Connecting to server...")
-        self._handle_tcp_connection(server_ip, tcp_port, self.file_size,id)
+        self._handle_tcp_connection(server_ip, tcp_port, self.file_size, id)
 
     def _handle_tcp_connection(self, server_ip, tcp_port, file_size, id):
         """Handle TCP connection to the server."""
@@ -214,6 +212,7 @@ class Client:
     def stop(self):
         self.running = False
 
+
 # Main Function for Client
 def main():
     udp_port = 33333
@@ -227,6 +226,7 @@ def main():
     except KeyboardInterrupt:
         print("Shutting down client...")
         client.stop()
+
 
 if __name__ == "__main__":
     main()
