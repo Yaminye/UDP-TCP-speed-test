@@ -124,7 +124,7 @@ class Server:
                     ) + payload_data
 
                     udp_socket.sendto(payload_packet, addr)
-                print(f"Sent {file_size} bytes to {addr} over UDP")
+                print(f"Finished to Sent {file_size} bytes to {addr} over UDP")
         except Exception as e:
             print(f"Error handling UDP request from {addr}: {e}")
 
@@ -132,14 +132,14 @@ class Server:
         """Start the TCP server to handle client requests."""
         self.tcp_socket.bind(('0.0.0.0', self.tcp_port))
         self.tcp_socket.listen()
-        print(f"Server started, listening on TCP port {self.tcp_port}")
+        print(f"Server started, listening on TCP port {self.tcp_port}\n")
 
         while self.running:
             conn, addr = self.tcp_socket.accept()
             print(f"Accepted connection from {addr}")
-            threading.Thread(target=self._handle_tcp_client, args=(conn,), daemon=True).start()
+            threading.Thread(target=self._handle_tcp_client, args=(conn,addr), daemon=True).start()
 
-    def _handle_tcp_client(self, conn):
+    def _handle_tcp_client(self, conn, addr):
         """Handle a single TCP client."""
         try:
             # Receive the request packet
@@ -162,7 +162,8 @@ class Server:
                 conn.sendall(b'a' * chunk)
                 bytes_sent += chunk
 
-            print(f"Sent {file_size} bytes to client in chunks.")
+            print(f"Finished to Sent {file_size} bytes to {addr} over TCP")
+
         except ValueError as ve:
             print(f"Request validation error: {ve}")
         except Exception as e:
